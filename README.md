@@ -12,10 +12,15 @@ see its
 
 | Branch | What it demonstrates |
 |---|---|
-| [`node`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/node) | A plain `image`-based `.devcontainer.json`, Node.js. |
-| [`python`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/python) | A plain `image`-based `.devcontainer.json`, Python. |
-| [`go`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/go) | A plain `image`-based `.devcontainer.json`, Go. |
+| [`node`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/node) | A plain `image`-based `.devcontainer.json`, Node.js, standard location (`.devcontainer/devcontainer.json`). |
+| [`python`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/python) | Same shape, Python. |
+| [`go`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/go) | Same shape, Go. |
 | [`dockerfile`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/dockerfile) | The `build.dockerfile` form instead of `image` — a real, custom-built environment. |
+| [`root-config`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/root-config) | `.devcontainer.json` at the repo **root**, not under `.devcontainer/` — a different valid config location entirely. |
+| [`subfolder-config`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/subfolder-config) | `.devcontainer/<name>/devcontainer.json` — the named-subfolder discovery form, for a repo with more than one dev container definition. |
+| [`features-and-settings`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/features-and-settings) | [Dev Container Features](https://containers.dev/implementors/features/), `forwardPorts`, `postCreateCommand`, `hostRequirements`, `remoteEnv` — a richer, more realistic config than "just an image". |
+| [`missing-devcontainer-json`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/missing-devcontainer-json) | **Negative.** No `.devcontainer.json` anywhere in the repo — what a `/build` request against it actually returns. |
+| [`invalid-devcontainer-json`](https://github.com/DeepSpaceCartel/devcontainer-builder-examples/tree/invalid-devcontainer-json) | **Negative.** A `.devcontainer.json` that exists but is malformed — what that actually returns, distinct from the missing-file case. |
 
 Each branch is independent (no shared history with `main` or each other) —
 that's deliberate: a branch is meant to be pointed at directly (as a
@@ -24,16 +29,24 @@ Template's own **Branch** parameter), not browsed as a merged whole.
 
 ## Using one
 
-Point devcontainer-builder at this repo and the branch you want:
+Point devcontainer-builder at this repo and the branch you want. Pushing
+anywhere real needs credentials for that registry — see each branch's own
+`payload.json` and README for a concrete example
+([Credential handling](https://github.com/DeepSpaceCartel/devcontainer-builder/blob/main/docs/concepts/credential-handling.md)
+covers the full resolution order):
+
+```json title="payload.json"
+{
+  "repository": "https://github.com/deepspacecartel/devcontainer-builder-examples.git",
+  "branch": "node",
+  "image": { "registry": "ghcr.io/deepspacecartel" }
+}
+```
 
 ```bash
 curl -s -X POST http://devcontainer-builder.internal:8080/build \
   -H 'Content-Type: application/json' \
-  -d '{
-    "repository": "https://github.com/DeepSpaceCartel/devcontainer-builder-examples.git",
-    "branch": "node",
-    "image": { "registry": "ghcr.io/example" }
-  }'
+  -d @payload.json
 ```
 
 Or, from a Coder workspace created off `templates/coder-kubernetes`, just
