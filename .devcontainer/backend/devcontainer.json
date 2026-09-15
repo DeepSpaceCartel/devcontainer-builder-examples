@@ -1,0 +1,4 @@
+{
+  "name": "backend",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm"
+}
