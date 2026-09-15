@@ -1,0 +1,4 @@
+{
+  "name": "invalid-devcontainer-json",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm"
+  // missing comma above, and this brace is never closed
