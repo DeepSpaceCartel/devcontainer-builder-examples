@@ -1,0 +1,22 @@
+{
+  "name": "features-and-settings",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/github-cli": {}
+  },
+  "forwardPorts": [3000],
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb"
+  },
+  "remoteEnv": {
+    "APP_ENV": "devcontainer"
+  },
+  "postCreateCommand": "node --version && gh --version",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint"]
+    }
+  }
+}
