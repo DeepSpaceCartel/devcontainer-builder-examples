@@ -1,14 +1,47 @@
 {
   "name": "docs-demo",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
-  "forwardPorts": [3000],
+  "forwardPorts": [
+    3000
+  ],
   "portsAttributes": {
-    "3000": { "label": "Web app", "protocol": "http" }
+    "3000": {
+      "label": "Web app",
+      "protocol": "http"
+    }
   },
   "postCreateCommand": "npm install",
   "customizations": {
     "vscode": {
-      "extensions": ["dbaeumer.vscode-eslint"]
+      "extensions": [
+        "dbaeumer.vscode-eslint"
+      ]
+    },
+    "kubernetes": {
+      "resources": {
+        "requests": {
+          "cpu": "500m",
+          "memory": "1Gi"
+        },
+        "limits": {
+          "cpu": "3",
+          "memory": "3Gi"
+        }
+      },
+      "nodeSelector": {
+        "pool": "x"
+      },
+      "tolerations": [
+        {
+          "key": "t",
+          "operator": "Exists",
+          "effect": "NoSchedule"
+        }
+      ]
     }
+  },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb"
   }
 }
