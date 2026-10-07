@@ -1,0 +1,22 @@
+{
+  "name": "lifecycle-and-extensions",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "features": {
+    "./hello": {}
+  },
+  "remoteUser": "vscode",
+  "onCreateCommand": "echo \"on-create in ${containerWorkspaceFolder}\"",
+  "postCreateCommand": ["printf", "%s\\n", "post-create from devcontainer.json"],
+  "postStartCommand": {
+    "first": "echo post-start first",
+    "second": ["echo", "post-start second"]
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["redhat.vscode-yaml", "HashiCorp.Terraform", "-ms-python.python"],
+      "settings": {
+        "editor.tabSize": 2
+      }
+    }
+  }
+}

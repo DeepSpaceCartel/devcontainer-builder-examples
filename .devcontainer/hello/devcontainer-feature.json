@@ -1,0 +1,16 @@
+{
+  "id": "hello",
+  "version": "1.0.0",
+  "name": "Hello",
+  "description": "Fixture Feature: contributes its own postCreateCommand and VS Code customizations, so they can be seen merged with devcontainer.json's.",
+  "postCreateCommand": "echo post-create from the hello Feature",
+  "customizations": {
+    "vscode": {
+      "extensions": ["hashicorp.terraform", "ms-python.python"],
+      "settings": {
+        "editor.tabSize": 4,
+        "files.trimTrailingWhitespace": true
+      }
+    }
+  }
+}
