@@ -1,0 +1,28 @@
+{
+  "name": "runtime-and-env",
+  "build": { "dockerfile": "Dockerfile" },
+  "remoteUser": "dev",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}-app",
+  "containerEnv": {
+    "FIXTURE_CONTAINER_ENV": "from-containerEnv",
+    "PATH": "${containerEnv:PATH}:/opt/fixture/bin"
+  },
+  "remoteEnv": {
+    "FIXTURE_ORG": "${localEnv:FIXTURE_ORG:DeepSpaceCartel}",
+    "FIXTURE_TOKEN": "${localEnv:FIXTURE_TOKEN}",
+    "FIXTURE_PROJECT_DIR": "${containerWorkspaceFolder}"
+  },
+  "forwardPorts": [3000, "db:5432"],
+  "portsAttributes": {
+    "3000": { "label": "Fixture web", "protocol": "http" }
+  },
+  "mounts": [
+    "source=fixture-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=${localEnv:HOME}/.ssh,target=/home/dev/.ssh,type=bind"
+  ],
+  "runArgs": ["--cap-add=SYS_PTRACE", "--shm-size=256m", "--add-host=fixture.internal:10.0.0.5", "--init", "--network=host"],
+  "hostRequirements": { "cpus": 2, "memory": "2gb", "storage": "8gb" },
+  "initializeCommand": "cp -n .env.example .env",
+  "postCreateCommand": ["sh", "-c", "echo \"org=$FIXTURE_ORG dir=$FIXTURE_PROJECT_DIR\" > /tmp/fixture-post-create"],
+  "postStartCommand": "test -f .env && echo initialize-ran-first > /tmp/fixture-post-start"
+}
